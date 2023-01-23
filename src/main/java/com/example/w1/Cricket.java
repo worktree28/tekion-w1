@@ -2,6 +2,12 @@ package com.example.w1;
 
 import java.util.ArrayList;
 import com.github.javafaker.Faker;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 enum Role{
     BATSMAN, BOWLER, WICKET_KEEPER, ALL_ROUNDER
@@ -24,7 +30,9 @@ class RunsPerBall{
         }
     }
 }
-
+@Getter
+@Setter
+@ToString
 class Player{
     private String name;
     private Role role;
@@ -35,26 +43,18 @@ class Player{
         this.name = name;
         this.role = role;
     }
-    public String getName(){
-        return this.name;
-    }
-    public Role getRole(){
-        return this.role;
-    }
-    public int getRuns(){
-        return this.runs;
-    }
-    public int getWickets(){
-        return this.wickets;
-    }
-    public int getBalls(){
-        return this.balls;
-    }
-    public void addRuns(int runs){
-        this.runs = runs;
+
+    public Role getRole() {
+        return role;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
+@ToString
+@Getter
+@Setter
 class Team{
     private String name;
     private ArrayList<Player> players;
@@ -62,20 +62,28 @@ class Team{
     private int runs=0;
     private int wickets=0;
     private int balls=0;
-    public Team(TeamStatus status){
+
+    public TeamStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TeamStatus status) {
+        this.status = status;
+    }
+
+    public Team() {
         // create random team name and 11 random players and add them to the team
         Faker faker = new Faker();
-        this.status = status;
         this.name = faker.team().name();
         this.players = new ArrayList<Player>();
-        for(int i=0; i<11; i++){
+        for (int i = 0; i < 11; i++) {
             String nameTmp = faker.name().fullName();
             Role role;
-            if(i==0)
+            if (i == 0)
                 role = Role.WICKET_KEEPER;
-            else if(i<4)
+            else if (i < 4)
                 role = Role.BATSMAN;
-            else if(i<6)
+            else if (i < 6)
                 role = Role.ALL_ROUNDER;
             else
                 role = Role.BOWLER;
@@ -83,41 +91,8 @@ class Team{
             this.players.add(player);
         }
     }
-    public String getName(){
-        return this.name;
-    }
-    public ArrayList<Player> getPlayers(){
-        return this.players;
-    }
-    public TeamStatus getStatus(){
-        return this.status;
-    }
-    public int getRuns(){
-        return this.runs;
-    }
-    public int getWickets(){
-        return this.wickets;
-    }
-    public int getBalls(){
-        return this.balls;
-    }
-    public void setRuns(int runs){
-        this.runs = runs;
-    }
-    public void setWickets(int wickets){
-        this.wickets = wickets;
-    }
-    public void setBalls(int balls){
-        this.balls = balls;
-    }
-    public void setStatus(TeamStatus status){
-        this.status = status;
-    }
-
-
 
 }
-
 class Innings{
     private ArrayList<ArrayList<Character>> scoreBoard= new ArrayList<ArrayList<Character>>();
     private int overs=0;
@@ -142,8 +117,11 @@ class Innings{
             for(int i=0; i<6; i++){
                 // play the ball
                 int runs = RunsPerBall.getRuns(this.battingTeam.getPlayers().get(this.battingTeam.getWickets()));
-                if(runs!=-1)
+                if(runs!=-1){
+                    this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).setRuns(runs);
                     this.battingTeam.setRuns(this.battingTeam.getRuns()+runs);
+                }
+                this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).setBalls(this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).getBalls()+1);
                 this.battingTeam.setBalls(this.battingTeam.getBalls()+1);
                 if(targetScore!=0 && this.battingTeam.getRuns()>=targetScore){
                     this.battingTeam.setStatus(TeamStatus.WON);
@@ -194,28 +172,40 @@ class Innings{
         }
     }
 }
+@Document(collection = "matches")
+@ToString
+@Getter
+@Setter
 class Match{
+    @Id
+    private String id;
+    private Team team1= new Team();
+    private Team team2= new Team();
+    private ArrayList<ArrayList<Character>> scoreBoard1;
+    private ArrayList<ArrayList<Character>> scoreBoard2;
+    private int targetScore;
     public Match(){
         Faker faker = new Faker();
-        Team team1;
-        Team team2;
         if(faker.bool().bool()){
             // System.out.println("Team 1 is batting first");
-            team1 = new Team(TeamStatus.BATTING);
-            team2 = new Team(TeamStatus.BOWLING);
+            team1.setStatus(TeamStatus.BATTING);
+            team2.setStatus(TeamStatus.BOWLING);
         }
         else{
             // System.out.println("Team 2 is batting first");
-            team1 = new Team(TeamStatus.BOWLING);
-            team2 = new Team(TeamStatus.BATTING);
+            team2.setStatus(TeamStatus.BATTING);
+            team1.setStatus(TeamStatus.BOWLING);
         }
         Team battingTeam = team1.getStatus()==TeamStatus.BATTING?team1:team2;
         Team bowlingTeam = team1.getStatus()==TeamStatus.BOWLING?team1:team2;
 
         Innings innings1 = new Innings(battingTeam, bowlingTeam, true);
         innings1.startInnings();
+        targetScore = battingTeam.getRuns()+1;
         int target = battingTeam.getRuns()+1;
+
         System.out.println(battingTeam.getName()+" is batting first");
+        scoreBoard2 = innings1.getScoreBoard();
         System.out.println(innings1.getScoreBoard());
         System.out.println("Score = " + battingTeam.getRuns() +"/"+ battingTeam.getWickets()+" in "+ballsToOvers(battingTeam.getBalls()));
         System.out.println();
@@ -228,6 +218,7 @@ class Match{
         Innings innings2 = new Innings(battingTeam, bowlingTeam, false);
         innings2.setTargetScore(target);
         innings2.startInnings();
+        scoreBoard1 = innings2.getScoreBoard();
         System.out.println(innings2.getScoreBoard());
         System.out.println("Final score = " + battingTeam.getRuns() +"/"+ battingTeam.getWickets()+" in "+ballsToOvers(battingTeam.getBalls()));
         System.out.println();
@@ -250,10 +241,7 @@ class Match{
 }
 
 public class Cricket{
-    public static void main(String[] args){
-        startMatch();
-    }
-    public static void startMatch(){
-        Match match = new Match();
+    public static Match startMatch(){
+        return new Match();
     }
 }
