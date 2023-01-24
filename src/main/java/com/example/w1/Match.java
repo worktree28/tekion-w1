@@ -5,9 +5,10 @@ import com.github.javafaker.Faker;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Component;
 
 enum Role{
     BATSMAN, BOWLER, WICKET_KEEPER, ALL_ROUNDER
@@ -176,16 +177,25 @@ class Innings{
 @ToString
 @Getter
 @Setter
-class Match{
+@Component
+public class Match{
     @Id
-    private String id;
-    private Team team1= new Team();
-    private Team team2= new Team();
+    private ObjectId id;
+    private Team team1;
+    private Team team2;
     private ArrayList<ArrayList<Character>> scoreBoard1;
     private ArrayList<ArrayList<Character>> scoreBoard2;
     private int targetScore;
-    public Match(){
+    String result;
+    public Match(){}
+    Match startMatch(){
         Faker faker = new Faker();
+        id = new ObjectId();
+        team2 = new Team();
+        team1 = new Team();
+        scoreBoard1= new ArrayList<ArrayList<Character>>();
+        scoreBoard2= new ArrayList<ArrayList<Character>>();
+
         if(faker.bool().bool()){
             // System.out.println("Team 1 is batting first");
             team1.setStatus(TeamStatus.BATTING);
@@ -224,14 +234,16 @@ class Match{
         System.out.println();
 
         if(battingTeam.getStatus()==TeamStatus.WON){
-            System.out.println(battingTeam.getName()+" won the match"+ " by "+(10-battingTeam.getWickets())+" wickets");
+            result = battingTeam.getName()+" won the match"+ " by "+(10-battingTeam.getWickets())+" wickets";
         }
         else if(battingTeam.getStatus()==TeamStatus.LOST){
-            System.out.println(bowlingTeam.getName()+" won the match"+ " by "+(bowlingTeam.getRuns()-battingTeam.getRuns())+" runs");
+            result = bowlingTeam.getName()+" won the match"+ " by "+(bowlingTeam.getRuns()-battingTeam.getRuns())+" runs";
         }
         else{
-            System.out.println("Match Draw");
+            result = "Match Draw";
         }
+        System.out.println(result);
+        return this;
     }
     private double ballsToOvers(int balls){
         double overs= (int)balls/6;
@@ -240,8 +252,3 @@ class Match{
     }
 }
 
-public class Cricket{
-    public static Match startMatch(){
-        return new Match();
-    }
-}

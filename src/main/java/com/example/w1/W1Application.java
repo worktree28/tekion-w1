@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,11 +11,12 @@ import java.util.List;
 
 @SpringBootApplication
 @RestController
-@EnableMongoRepositories(basePackageClasses = CricketRepository.class)
+@EnableMongoRepositories(basePackageClasses = MatchRepository.class)
 public class W1Application {
 	@Autowired
-	CricketRepository cricketRepository;
-
+	MatchRepository matchRepository;
+	@Autowired
+	Match match;
 	public static void main(String[] args) {
 		SpringApplication.run(W1Application.class, args);
 	}
@@ -27,18 +27,18 @@ public class W1Application {
 	}
 	@GetMapping("/play-match")
 	public Match startMatch( ){
-		Match match = new Match();
-		cricketRepository.insert(match);
+		match.startMatch();
+		matchRepository.insert(match);
 		return match;
 	}
 	@GetMapping("/all")
 	public List<Match> showAll(){
-		return cricketRepository.findAll();
+		return matchRepository.findAll();
 	}
 	@GetMapping("/del")
 	public String del(){
 		try{
-			cricketRepository.deleteAll();
+			matchRepository.deleteAll();
 			return "Success";
 		}
 		catch (Exception e){
