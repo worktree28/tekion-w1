@@ -118,7 +118,7 @@ class Innings{
                 // play the ball
                 int runs = RunsPerBall.getRuns(this.battingTeam.getPlayers().get(this.battingTeam.getWickets()));
                 if(runs!=-1){
-                    this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).setRuns(runs);
+                    this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).setRuns(this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).getRuns()+runs);
                     this.battingTeam.setRuns(this.battingTeam.getRuns()+runs);
                 }
                 this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).setBalls(this.battingTeam.getPlayers().get(this.battingTeam.getWickets()).getBalls()+1);
