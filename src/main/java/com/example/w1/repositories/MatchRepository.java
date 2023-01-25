@@ -1,6 +1,8 @@
-package com.example.w1;
+package com.example.w1.repositories;
 
 
+import com.example.w1.models.Match;
+import com.example.w1.models.Team;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
