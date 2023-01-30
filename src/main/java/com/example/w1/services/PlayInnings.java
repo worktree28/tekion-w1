@@ -6,7 +6,7 @@ import com.example.w1.models.Team;
 import java.util.ArrayList;
 
 public class PlayInnings {
-    private ArrayList<ArrayList<Character>> scoreBoard = new ArrayList<ArrayList<Character>>();
+    private ArrayList<ArrayList<Character>> scoreBoard = new ArrayList<>();
     private int overs = 0;
     private Team battingTeam;
     private Team bowlingTeam;
