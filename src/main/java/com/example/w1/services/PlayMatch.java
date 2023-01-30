@@ -4,15 +4,17 @@ import com.example.w1.models.Match;
 import com.example.w1.models.Team;
 import com.example.w1.models.TeamStatus;
 import com.github.javafaker.Faker;
-import org.bson.types.ObjectId;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.UUID;
+
 @Service
 public class PlayMatch {
     public Match start(Match match){
         Faker faker = new Faker();
-        match.setId(new ObjectId());
+        match.setId(UUID.randomUUID().toString());
         match.setTeam1(new Team());
         match.setTeam2(new Team());
         match.setScoreBoard1(new ArrayList<ArrayList<Character>>());
