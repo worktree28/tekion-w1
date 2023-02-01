@@ -1,30 +1,18 @@
 package com.example.w1.models;
 
 import com.github.javafaker.Faker;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.ArrayList;
 
-@ToString
-@Getter
-@Setter
+@Data
 public class Team {
     private String name;
     private ArrayList<Player> players;
     private TeamStatus status;
-    private int runs = 0;
-    private int wickets = 0;
-    private int balls = 0;
-
-    public TeamStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TeamStatus status) {
-        this.status = status;
-    }
+    private int runs;
+    private int wickets;
+    private int balls;
 
     public Team() {
         // create random team name and 11 random players and add them to the team
@@ -45,6 +33,14 @@ public class Team {
             Player player = new Player(nameTmp, role);
             this.players.add(player);
         }
+    }
+
+    public TeamStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TeamStatus status) {
+        this.status = status;
     }
 
 }

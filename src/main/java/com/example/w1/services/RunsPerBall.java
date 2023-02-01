@@ -1,7 +1,7 @@
 package com.example.w1.services;
 
-import com.example.w1.models.Role;
 import com.example.w1.models.Player;
+import com.example.w1.models.Role;
 import com.github.javafaker.Faker;
 
 class RunsPerBall {

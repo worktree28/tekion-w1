@@ -1,17 +1,17 @@
 package com.example.w1.services;
 
-import com.example.w1.models.TeamStatus;
 import com.example.w1.models.Team;
+import com.example.w1.models.TeamStatus;
 
 import java.util.ArrayList;
 
 public class PlayInnings {
-    private ArrayList<ArrayList<Character>> scoreBoard = new ArrayList<>();
-    private int overs = 0;
-    private Team battingTeam;
-    private Team bowlingTeam;
-    private boolean isFirstInnings;
-    private int targetScore = 0;
+    private final ArrayList<ArrayList<Character>> scoreBoard = new ArrayList<>();
+    private final Team battingTeam;
+    private final Team bowlingTeam;
+    private final boolean isFirstInnings;
+    private int overs;
+    private int targetScore;
 
     public PlayInnings(Team battingTeam, Team bowlingTeam, boolean isFirstInnings) {
         this.isFirstInnings = isFirstInnings;
