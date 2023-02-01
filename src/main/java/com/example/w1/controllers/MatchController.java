@@ -36,7 +36,7 @@ public class MatchController {
     }
 
     @DeleteMapping("/del")
-    public void del(){
+    public void deleteMatches(){
         matchService.deleteAll();
     }
     record TeamName(String name){}
