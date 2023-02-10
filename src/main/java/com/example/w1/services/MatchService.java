@@ -2,6 +2,7 @@ package com.example.w1.services;
 
 import com.example.w1.models.Match;
 import com.example.w1.repositories.MatchRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MatchService {
-    @Autowired
-    private MatchRepository matchRepository;
-    @Autowired
-    private Match match;
-    @Autowired
-    private PlayMatch playMatch;
+    private final MatchRepository matchRepository;
+    private final Match match;
+    private final PlayMatch playMatch;
 
     public List<Match> viewByTeam(String teamName){
         List<Match> matches = matchRepository.findByTeam1Name(teamName);

@@ -2,6 +2,7 @@ package com.example.w1.controllers;
 
 import com.example.w1.models.Match;
 import com.example.w1.services.MatchService;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@RequiredArgsConstructor
 public class MatchController {
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
     @GetMapping("/all")
     public List<Match> showAll(){

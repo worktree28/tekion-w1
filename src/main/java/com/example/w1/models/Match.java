@@ -1,6 +1,6 @@
 package com.example.w1.models;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
@@ -10,6 +10,9 @@ import java.util.ArrayList;
 @Document(collection = "matches")
 @Data
 @Component
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Match{
     String result;
     @Id

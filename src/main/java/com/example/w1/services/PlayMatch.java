@@ -44,7 +44,9 @@ public class PlayMatch {
             match.setResult( battingTeam.getName()+" won the match"+ " by "+(10-battingTeam.getWickets())+" wickets");
         }
         else if(battingTeam.getStatus()==TeamStatus.LOST){
-            match.setResult(bowlingTeam.getName()+" won the match"+ " by "+(bowlingTeam.getRuns()-battingTeam.getRuns())+" runs");
+            match.setResult
+                    (bowlingTeam.getName()+" won the match"+ " by "+
+                            (bowlingTeam.getRuns()-battingTeam.getRuns())+" runs");
         }
         else{
             match.setResult("Match Draw");
