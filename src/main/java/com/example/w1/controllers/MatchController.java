@@ -4,7 +4,6 @@ import com.example.w1.models.Match;
 import com.example.w1.services.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
