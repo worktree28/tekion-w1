@@ -16,7 +16,6 @@ public class MatchServiceImp implements MatchService{
     private final MatchRepository matchRepository;
     private final Match match;
     private final PlayMatch playMatch;
-
     public List<Match> viewByTeam(String teamName){
         List<Match> matches = matchRepository.findByTeam1Name(teamName);
         matches.addAll(matchRepository.findByTeam2Name(teamName));
@@ -24,7 +23,6 @@ public class MatchServiceImp implements MatchService{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found");
         return matches;
     }
-
     public Match viewById(String id){
         if(matchRepository.existsById(id)){
             Optional<Match> match = matchRepository.findById(id);
@@ -32,7 +30,6 @@ public class MatchServiceImp implements MatchService{
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found");
     }
-
     public List<Match> showAll(){
         return matchRepository.findAll();
     }
@@ -50,8 +47,6 @@ public class MatchServiceImp implements MatchService{
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Adding to db failed");
         }
     }
-
-
     public void deleteAll(){
         matchRepository.deleteAll();
     }

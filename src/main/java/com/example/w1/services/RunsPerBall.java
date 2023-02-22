@@ -4,7 +4,7 @@ import com.example.w1.models.Player;
 import com.example.w1.models.Role;
 import com.github.javafaker.Faker;
 
-class RunsPerBall {
+public class RunsPerBall {
     public static int getRuns(Player player) {
         Faker faker = new Faker();
         if (player.getRole() == Role.BATSMAN || player.getRole() == Role.WICKET_KEEPER) {
@@ -16,5 +16,4 @@ class RunsPerBall {
             return faker.number().numberBetween(-1, 3);
         }
     }
-
 }
