@@ -1,14 +1,18 @@
 package com.example.w1.services;
 
 import com.example.w1.models.Match;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface MatchService {
-    List<Match> viewByTeam(String teamName);
+    Page<Match> viewByTeam(String teamName);
     Match viewById(String id);
-    List<Match> showAll();
+    Page<Match> showAll();
     Match startMatch();
     void insertMatch(Match match);
     void deleteAll();
+    Page<Match> showAllES();
+    Page<Match> showAllMongo();
+    List<Match> partialSearch(String name);
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Document(collection = "matches")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "matches")
 @Data
 @Component
 @Builder
