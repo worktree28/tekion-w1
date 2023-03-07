@@ -19,15 +19,15 @@ public class MatchServiceTests{
     public void testShowAll(){
         Match match = matchService.startMatch();
         Match match1 = matchService.startMatch();
-        List<Match> matches = matchService.showAll();
+        List<Match> matches = matchService.showAll().getContent();
         assertTrue(matches.contains(match));
         assertTrue(matches.contains(match1));
     }
     @Test
     public void testStartMatch(){
-        int size = matchService.showAll().size();
+        int size = matchService.showAll().getContent().size();
         matchService.startMatch();
-        assertEquals(size+1, matchService.showAll().size());
+        assertEquals(size+1, matchService.showAll().getContent().size());
     }
     @Test
     public void testViewById(){
@@ -38,8 +38,8 @@ public class MatchServiceTests{
     @Test
     public void testViewByTeam(){
         Match match = matchService.startMatch();
-        List<Match> matches = matchService.viewByTeam(match.getTeam1().getName());
-        List<Match> matches1 = matchService.viewByTeam(match.getTeam2().getName());
+        List<Match> matches = matchService.viewByTeam(match.getTeam1().getName()).getContent();
+        List<Match> matches1 = matchService.viewByTeam(match.getTeam2().getName()).getContent();
         assertTrue(matches.contains(match));
         assertTrue(matches1.contains(match));
     }
@@ -47,6 +47,6 @@ public class MatchServiceTests{
     public void testDeleteAll(){
         testStartMatch();
         matchService.deleteAll();
-        assertEquals(0, matchService.showAll().size());
+        assertEquals(0, matchService.showAll().getContent().size());
     }
 }
