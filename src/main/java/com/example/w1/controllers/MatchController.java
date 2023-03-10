@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MatchController {
   private final MatchService matchService;
-
+  private final SimpMessagingTemplate template;
   @GetMapping("/all")
   public Page<Match> showAll() {
     return matchService.showAll();
@@ -22,13 +25,20 @@ public class MatchController {
 
   @GetMapping("/play-match")
   public Match startMatch() {
-    return matchService.startMatch();
+    Match match = matchService.startMatch();
+    template.convertAndSend("/topic/match", match);
+    return match;
   }
 
+  @SendTo("/topic/match")
+  public Match broadcastMatch(@Payload Match match) {
+    return match;
+  }
   @GetMapping("/view/{id}")
   public Match viewById(@PathVariable("id") String id) {
     return matchService.viewById(id);
   }
+
 
   @PostMapping(
       value = "/view-team",

@@ -29,4 +29,5 @@ public class ElasticSearchConfiguration {
     ElasticsearchClient client = new ElasticsearchClient(getElasticsearchTransport());
     return client;
   }
+
 }

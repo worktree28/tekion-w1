@@ -25,6 +25,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.elasticsearch.plugin:x-pack-sql-jdbc:6.8.23'
 	implementation 'org.springframework.data:spring-data-elasticsearch:5.0.2'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
