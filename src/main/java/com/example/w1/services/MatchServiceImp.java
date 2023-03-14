@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
-public class MatchServiceImp implements MatchService {
+public class MatchServiceImp implements MatchService  {
   private final HelperES helperES;
   private final HelperMongo helperMongo;
   private final Match match;
@@ -20,7 +20,7 @@ public class MatchServiceImp implements MatchService {
 
   public Page<Match> viewByTeam(String teamName) {
     CompletableFuture[] futures =
-        new CompletableFuture[] {
+        new CompletableFuture<?>[] {
           CompletableFuture.supplyAsync(() -> helperES.findByTeam(teamName)),
           CompletableFuture.supplyAsync(() -> helperMongo.findByTeam(teamName))
         };
@@ -40,30 +40,11 @@ public class MatchServiceImp implements MatchService {
   }
 
   public Match viewById(String id) {
-    CompletableFuture[] futures =
-        new CompletableFuture[] {
-          CompletableFuture.supplyAsync(() -> helperES.findById(id)),
-          CompletableFuture.supplyAsync(() -> helperMongo.findById(id))
-        };
-    CompletableFuture<Match> result =
-        CompletableFuture.anyOf(futures).thenApplyAsync((resultObj) -> (Match) resultObj);
-    Match match = result.join();
-    if (match == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found");
-    }
-    return match;
+    return helperES.findById(id);
   }
 
   public Page<Match> showAll() {
-    CompletableFuture<Page<Match>>[] futures =
-        new CompletableFuture[] {
-          CompletableFuture.supplyAsync(helperES::findAll),
-          CompletableFuture.supplyAsync(helperMongo::findAll)
-        };
-
-    CompletableFuture<Page<Match>> result =
-        CompletableFuture.anyOf(futures).thenApplyAsync((resultObj) -> (Page<Match>) resultObj);
-    return result.join();
+    return helperES.findAll();
   }
 
   public Match startMatch() {
