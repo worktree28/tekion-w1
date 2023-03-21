@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 public class HelperMongo {
   private final MatchRepositoryMongo matchRepositoryMongo;
 
-  public Page<Match> findByTeam(String team) {
-    return matchRepositoryMongo.findByTeam1NameOrTeam2Name(team, team, Pageable.ofSize(10));
-  }
+  //  public Page<Match> findByTeam(String team) {
+  //    return matchRepositoryMongo.findByTeam1NameOrTeam2Name(team, team, Pageable.ofSize(10));
+  //  }
 
   public Page<Match> findAll() {
     return matchRepositoryMongo.findAll(Pageable.unpaged());
@@ -24,9 +24,9 @@ public class HelperMongo {
     matchRepositoryMongo.deleteAll();
   }
 
-  public Match findById(String id) {
-    return matchRepositoryMongo.findById(id).orElse(null);
-  }
+  //  public Match findById(String id) {
+  //    return matchRepositoryMongo.findById(id).orElse(null);
+  //  }
 
   public void save(Match match) {
     matchRepositoryMongo.insert(match);

@@ -8,35 +8,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
-public class MatchServiceImp implements MatchService  {
+public class MatchServiceImp implements MatchService {
   private final HelperES helperES;
   private final HelperMongo helperMongo;
   private final Match match;
   private final PlayMatch playMatch;
+  //  @Deprecated
+  //  public Page<Match> viewByTeam(String teamName) {
+  //    CompletableFuture[] futures =
+  //        new CompletableFuture<?>[] {
+  //          CompletableFuture.supplyAsync(() -> helperES.findByTeam(teamName)),
+  //          CompletableFuture.supplyAsync(() -> helperMongo.findByTeam(teamName))
+  //        };
+  //
+  //    CompletableFuture<Page<Match>> result =
+  //        CompletableFuture.anyOf(futures)
+  //            .thenApplyAsync(
+  //                (resultObj) -> {
+  //                  // check cast is legal
+  //                  if (!(resultObj instanceof Page)) {
+  //                    throw new ResponseStatusException(
+  //                        HttpStatus.INTERNAL_SERVER_ERROR, "Error in db");
+  //                  }
+  //                  return (Page<Match>) resultObj;
+  //                });
+  //    return result.join();
+  //  }
 
   public Page<Match> viewByTeam(String teamName) {
-    CompletableFuture[] futures =
-        new CompletableFuture<?>[] {
-          CompletableFuture.supplyAsync(() -> helperES.findByTeam(teamName)),
-          CompletableFuture.supplyAsync(() -> helperMongo.findByTeam(teamName))
-        };
-
-    CompletableFuture<Page<Match>> result =
-        CompletableFuture.anyOf(futures)
-            .thenApplyAsync(
-                (resultObj) -> {
-                  // check cast is legal
-                  if (!(resultObj instanceof Page)) {
-                    throw new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR, "Error in db");
-                  }
-                  return (Page<Match>) resultObj;
-                });
-    return result.join();
+    return helperES.findByTeam(teamName);
   }
 
   public Match viewById(String id) {

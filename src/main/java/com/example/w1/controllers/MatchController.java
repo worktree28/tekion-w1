@@ -18,6 +18,7 @@ import java.util.List;
 public class MatchController {
   private final MatchService matchService;
   private final SimpMessagingTemplate template;
+
   @GetMapping("/all")
   public Page<Match> showAll() {
     return matchService.showAll();
@@ -34,11 +35,11 @@ public class MatchController {
   public Match broadcastMatch(@Payload Match match) {
     return match;
   }
+
   @GetMapping("/view/{id}")
   public Match viewById(@PathVariable("id") String id) {
     return matchService.viewById(id);
   }
-
 
   @PostMapping(
       value = "/view-team",

@@ -62,10 +62,10 @@ public class PlayMatch {
     }
     return match;
   }
-
-  private double ballsToOvers(int balls) {
-    double overs = balls / 6;
-    overs += (double) (balls % 6) / 10;
-    return overs;
-  }
+  //
+  //  private double ballsToOvers(int balls) {
+  //    double overs = balls / 6;
+  //    overs += (double) (balls % 6) / 10;
+  //    return overs;
+  //  }
 }
